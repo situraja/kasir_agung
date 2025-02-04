@@ -187,16 +187,17 @@ if (isset($_POST['addproduk'])) {
 
                         while ($pl = mysqli_fetch_array($getproduk)) {
                             $namaproduk = $pl['namaproduk'];
+                            $stock = $pl['stock'];
                             $deskripsi = $pl['deskripsi'];
                             $idproduk = $pl['idproduk'];
                         ?>
-                            <option value="<?=$idproduk;?>"><?=$namaproduk;?> - <?=$deskripsi;?></option>
+                            <option value="<?=$idproduk;?>"><?=$namaproduk;?> - <?=$deskripsi;?> (stock: <?=$stock;?>)</option>
                         <?php
                         }
                         ?>
                     </select>
 
-                    <input type="number" name="qty" class="form-control mt-4" placeholder="jumlah" required>
+                    <input type="number" name="qty" class="form-control mt-4" placeholder="jumlah" min="1" required>
                     <input type="hidden" name="idp" value="<?=$idp;?>">
                 </div>
 

@@ -96,26 +96,45 @@ if (isset($_POST['tambahbarang'])){
 
  }
 
- 
-if(isset($_POST['addproduk'])){
+ //produk dipilih di pesanan 
+ if(isset($_POST['addproduk'])){
    // Ambil data dari form
    $idproduk = $_POST['idproduk'];
    $idp = $_POST['idp'];
    $qty = $_POST['qty']; // Jumlah barang
 
-   // Query untuk memasukkan data ke tabel detailpesanan
-   $insert = mysqli_query($c, "insert into detailpesanan (idpesanan, idproduk, qty) VALUES ('$idp', '$idproduk', '$qty')");
+   //hitung stock sekarang ada berapa 
+   $hitung1 = mysqli_query($c,"SELECT * FROM produk WHERE idproduk='$idproduk'");
+   $hitung2 = mysqli_fetch_array($hitung1);
+   $stocksekarang = $hitung2['stock']; // stock barang saat ini 
 
-   if ($insert) {
-      // Jika berhasil, alihkan ke halaman view.php dengan idpesanan
-      header("Location: view.php?idp=$idp");
-      exit(); // Pastikan untuk mengakhiri skrip setelah header redirect
+   if($stocksekarang >= $qty){
+      //kurangi stock nya dengan jumlah yang akan dikeluarkan 
+      $selisih = $stocksekarang - $qty;
+
+      // stocknya cukup
+      $insert = mysqli_query($c, "INSERT INTO detailpesanan (idpesanan, idproduk, qty) VALUES ('$idp', '$idproduk', '$qty')");
+      $updet = mysqli_query($c, "UPDATE produk SET stock='$selisih' WHERE idproduk='$idproduk'");
+
+      if($insert && $updet) {
+         // Jika berhasil, alihkan ke halaman view.php dengan idpesanan
+         header("Location: view.php?idp=$idp");
+         exit(); // Pastikan untuk mengakhiri skrip setelah header redirect
+      } else {
+         // Jika gagal, tampilkan pesan error dan redirect kembali
+         echo '
+         <script>
+            alert("Gagal menambah pesanan baru");
+            window.location.href = "view.php?idp=' . $idp . '";
+         </script>
+         ';
+      }
    } else {
-      // Jika gagal, tampilkan pesan error dan redirect kembali
+      // stock tidak cukup
       echo '
       <script>
-         alert("Gagal menambah pesanan baru");
-         window.location.href = "view.php?idp='.$idp.'";
+         alert("Stock barang tidak cukup");
+         window.location.href = "view.php?idp=' . $idp . '";
       </script>
       ';
    }
