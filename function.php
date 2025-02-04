@@ -18,7 +18,7 @@ if(isset($_POST['login'])){
     //jika datanya di temukan
     //berhasil login 
 
-    $_SESSION['LOGIN'] = 'true';
+    $_SESSION['login'] = 'true';
     header('location:index.php');
    } else {
     //data tidak di temukan 
