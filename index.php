@@ -126,7 +126,9 @@ $h2 = mysqli_num_rows($h1);//jumlah pesanan
                                             <td><?=$namapelanggan ;?> - <?=$alamat;?></td>
                                             <td><?=$jumlah;?></td>
                                             <td><a href="view.php?idp=<?=$idorder;?>" class="btn btn-primary" 
-                                            target="blank">Tampilkan</a>delete</td>
+                                            target="blank">Tampilkan</a>
+                                            <a href="view.php?idp=<?=$idorder;?>" class="btn btn-danger" 
+                                            target="blank">delete</td>
                                             <tr>
                                        <?php
                                     };// end of  while

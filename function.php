@@ -141,5 +141,114 @@ if (isset($_POST['tambahbarang'])){
 }
 
 
+//menambah barang masuk 
+
+if (isset($_POST['barangmasuk'])) {
+   
+    $idproduk = mysqli_real_escape_string($c, $_POST['idproduk']);
+    $qty = mysqli_real_escape_string($c, $_POST['qty']);
+
+    
+    $insertb = mysqli_query($c, "INSERT INTO masuk (idproduk, qty) VALUES ('$idproduk', '$qty')");
+
+    if ($insertb) {
+        
+        header("Location: masuk.php");
+        exit(); 
+    } else {
+        
+        echo '
+        <script>
+            alert("Gagal");
+            window.location.href = "masuk.php";
+        </script>
+        ';
+    }
+}
+//hapus produk pesanan 
+if(isset($_POST['hapusprodukpesanan'])){
+$idp = $_POST['idp'];//iddetailpesanan
+$idpr = $_POST['idpr'];
+$idorder = $_POST['idorder'];
+
+//cek qty sekarang 
+$cek1 = mysqli_query($c,"select * from detailpesanan where iddetailpesanan='$idp'");
+$cek2 = mysqli_fetch_array ($cek1);
+$qtysekarang = $cek2['qty'];
+
+//cek stock sekarang
+$cek3 = mysqli_query($c,"select * from produk where idproduk='$idpr'");
+$cek4 = mysqli_fetch_array($cek3);
+$stocksekarang = $cek4['stock'];
+
+$hitung = $stocksekarang+$qtysekarang;
+
+$updet = mysqli_query($c,"update produk set stock='$hitung' where idproduk='$idpr'");//update stock
+$hapus = mysqli_query($c,"delete from detailpesanan where idproduk='$idpr' and iddetailpesanan='$idp'");
+
+
+if($updet&&$hapus){
+   header('Location: view.php?idp='.$idorder);
+
+}else{
+   echo '
+   <script>
+      alert("Gagal menghapus barang");
+      window.location.href = "view.php?idp=' . $idorder . '";
+   </script>
+   ';
+}
+}
+
+//edit barang
+if(isset($_POST['editbarang'])){
+   // Retrieve form data
+   $namaproduk = mysqli_real_escape_string($c, $_POST['namaproduk']);
+   $desc = mysqli_real_escape_string($c, $_POST['deskripsi']);
+   $harga = mysqli_real_escape_string($c, $_POST['harga']);
+   $idp = mysqli_real_escape_string($c, $_POST['idp']); // idproduk
+
+   // Update the query
+   $query = mysqli_query($c, "UPDATE produk SET namaproduk='$namaproduk', deskripsi='$desc', harga='$harga' WHERE idproduk='$idp'");
+
+   if($query){
+      // Redirect on success
+      header("Location: stock.php");
+      exit(); // Don't forget to call exit after header to stop script execution
+   } else {
+      // Display error if query fails
+      echo '
+      <script>
+          alert("Gagal");
+          window.location.href = "stock.php";
+      </script>
+      ';
+   }
+}
+ 
+
+//hapus barang
+if(isset($_POST['hapusbarang'])){
+  $idp = $_POST['idp'];
+
+  $query = mysqli_query($c,"delete from produk where idproduk='$idp'");
+
+  if($query){
+   // Redirect on success
+   header("Location: stock.php");
+   exit(); // Don't forget to call exit after header to stop script execution
+} else {
+   // Display error if query fails
+   echo '
+   <script>
+       alert("Gagal");
+       window.location.href = "stock.php";
+   </script>
+   ';
+}
+}
 
 ?>
+
+
+

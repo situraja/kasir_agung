@@ -116,25 +116,65 @@ if (isset($_POST['addproduk'])) {
                                 <?php 
                $get = mysqli_query($c, "SELECT dp.*, pr.namaproduk, pr.harga FROM detailpesanan dp JOIN produk pr ON dp.idproduk = pr.idproduk WHERE dp.idpesanan and idpesanan= '$idp'");
                  $i = 1;
-                  
-               while ($p = mysqli_fetch_array($get)) {
+                 
+                 $i = 1; // Initialize the counter for item number
+while ($p = mysqli_fetch_array($get)) {
+    $idpr = $p['idproduk'];  
+    $iddp = $p['iddetailpesanan'];  
     $qty = $p['qty'];
     $harga = $p['harga'];
     $namaproduk = $p['namaproduk'];
     $subtotal = $qty * $harga;
-    
-    echo "<tr>";
-    echo "<td>" . $i++ . "</td>"; // Menampilkan nomor urut
-    echo "<td>{$namaproduk}</td>";
-    echo "<td>Rp " . number_format($harga, 0, ',', '.') . "</td>"; // Memformat harga dengan simbol Rp
-    echo "<td>" . number_format($qty, 0, ',', '.') . "</td>"; // Memformat qty
-    echo "<td>Rp " . number_format($subtotal, 0, ',', '.') . "</td>"; // Memformat subtotal dengan simbol Rp
-    echo "<td><a href='delete.php?id={$p['idpesanan']}' class='btn btn-danger'>Delete</a></td>"; // Menampilkan tombol Delete
-    echo "</tr>";
-    
-    
-}
 ?>
+    <tr>
+        <td><?= $i++; ?></td> <!-- Menampilkan nomor urut -->
+        <td><?= $namaproduk; ?></td>
+        <td>Rp<?= number_format($harga, 0, ',', '.'); ?></td> <!-- Memformat harga dengan simbol Rp -->
+        <td><?= number_format($qty, 0, ',', '.'); ?></td> <!-- Memformat qty -->
+        <td>Rp<?= number_format($subtotal, 0, ',', '.'); ?></td> <!-- Memformat subtotal dengan simbol Rp -->
+        <td> edit
+        
+
+            <button type="button" class="btn btn-danger mb-4" data-bs-toggle="modal" data-bs-target="#delete<?=$idpr;?>">
+                Hapus
+            </button>
+        </td>
+    </tr>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="delete<?=$idpr;?>" tabindex="-1" aria-labelledby="deleteLabel<?=$idpr;?>" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="deleteLabel<?=$idpr;?>">Apakah Anda yakin ingin menghapus barang ini?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+
+                <form method="POST" >
+
+                <!-- Modal Body -->
+                    <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus barang ini?
+                    <input type="hidden" name="idp" value="<?=$iddp;?>">
+                    <input type="hidden" name="idpr" value="<?=$idpr;?>">
+                    <input type="hidden" name="idorder" value="<?=$idp;?>">
+                </div>
+
+            <!-- Modal Footer -->
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="hapusprodukpesanan">YA</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+                 <?php
+                 }; // End of while loop
+                 ?>
+                 
                                 </tbody>
                             </table>
                         </div>
