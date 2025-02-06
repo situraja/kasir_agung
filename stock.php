@@ -124,11 +124,11 @@ $h2 = mysqli_num_rows($h1);//jumlah produk
                                       <td>Rp<?=number_format($harga);?></td>
                                       <td>
                                         <!-- Edit Button -->
-                                        <button type="button" class="btn btn-warning mb-4" data-bs-toggle="modal" data-bs-target="#editLabel<?=$idproduk;?>">
+                                        <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#editLabel<?=$idproduk;?>">
                                           Edit
                                         </button>
                                         <!-- Delete Button (example text for now) -->
-                                        <button type="button" class="btn btn-danger mb-4" data-bs-toggle="modal" data-bs-target="#deletetLabel<?=$idproduk;?>">
+                                        <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteLabel<?=$idproduk;?>">
                                           Delete
                                         </button>
                                       </td>
@@ -140,7 +140,7 @@ $h2 = mysqli_num_rows($h1);//jumlah produk
                                         <div class="modal-content">
                                           <!-- Modal Header -->
                                           <div class="modal-header">
-                                            <h4 class="modal-title">Ubah</h4>
+                                            <h4 class="modal-title">Ubah <?=$namaproduk;?></h4>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                           </div>
                                     
@@ -174,36 +174,36 @@ $h2 = mysqli_num_rows($h1);//jumlah produk
                                     </div>
 
                                     
-                                    <!-- Modal Delete -->
-                                    <div class="modal fade" id="deleteLabel<?=$idproduk;?>" tabindex="-1" aria-labelledby="deleteLabel<?=$idproduk;?>" aria-hidden="true">
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <!-- Modal Header -->
-                                          <div class="modal-header">
-                                            <h4 class="modal-title">hapus</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                          </div>
-                                    
-                                          <!-- Modal Body -->
-                                          <div class="modal-body">
-                                            <form action="function.php" method="post">
-                                              Apakah Anda yakin ingin menghapus barang ini ?
-                                              <input type="hidden" name="idp" value="<?=$idproduk;?>">
-                                          </div>
-                                    
-                                          <!-- Modal Footer -->
-                                          <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success" name="hapusbarang">Submit</button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                          </div>
-                                          
-                                        </form>
-                                        </div>
-                                      </div>
-                                    </div>
+                        <!-- Modal Delete -->
+                      <div class="modal fade" id="deleteLabel<?=$idproduk;?>" tabindex="-1" aria-labelledby="deleteLabel<?=$idproduk;?>" aria-hidden="true">
+                      <div class="modal-dialog">
+                    <div class="modal-content">
+                      <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title">hapus <?=$namaproduk;?></h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" >&times;</button>
+                          </div>
+                                                    
+                            <!-- Modal Body -->
+                            <div class="modal-body">
+                        <form action="function.php" method="post">
+                      Apakah Anda yakin ingin menghapus barang ini ?
+                        <input type="hidden" name="idp" value="<?=$idproduk;?>">
+                        </div>
+                                                    
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="hapusbarang">Submit</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                                                          
+                        </form>
+                          </div>
+                        </div>
+                        </div>
 
-                                       <?php
-                                    };// end of  while
+                        <?php
+                                                    };// end of  while
                                
 
                                     ?>

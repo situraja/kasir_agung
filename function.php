@@ -248,6 +248,124 @@ if(isset($_POST['hapusbarang'])){
 }
 }
 
+
+//edit pelanggan 
+if(isset($_POST['editpelanggan'])){
+   $np = $_POST['namapelanggan'];
+   $nt = $_POST['notelp'];
+   $a = $_POST['alamat'];
+   $idpl = $_POST['idpl'];
+
+   // Update the query
+   $query = mysqli_query($c, "UPDATE pelanggan SET namapelanggan='$np', notelp='$nt', alamat='$a' WHERE idpelanggan='$idpl'");
+
+   if($query){
+      // Redirect on success
+      header("Location: pelanggan.php");
+      exit(); // Don't forget to call exit after header to stop script execution
+   } else {
+      // Display error if query fails
+      echo '
+      <script>
+          alert("Gagal");
+          window.location.href = "pelanggan.php";
+      </script>
+      ';
+   }
+}
+
+
+//hapus pelanggan
+if(isset($_POST['hapuspelanggan'])){
+   $idpl = $_POST['idpl'];
+ 
+   $query = mysqli_query($c,"delete from pelanggan where idpelanggan='$idpl'");
+ 
+   if($query){
+    // Redirect on success
+    header("Location: pelanggan.php");
+    exit(); // Don't forget to call exit after header to stop script execution
+ } else {
+    // Display error if query fails
+    echo '
+    <script>
+        alert("Gagal");
+        window.location.href = "pelanggan.php";
+    </script>
+    ';
+ }
+ }
+
+
+
+      //mengubah data barang masuk
+      if(isset($_POST['editdatabarangmasuk'])){
+         $qty = $_POST['qty'];
+         $idm = $_POST['idm '];//id masuk
+         $idp = $_POST['idp'];//id produk
+
+      //cari tau qty nya sekarang berapa
+      $caritahu = mysqli_query($c,"select * from masuk where idmasuk='$idm'");
+      $caritahu2 = mysqli_fetch_array($caritahu);
+      $qtysekarang = $caritahu2['qty'];
+
+      //cari tahu stock sekarang berapa
+      $caristock = mysqli_query($c,"select * from produk where idproduk='$idp'");
+      $caristock2 = mysqli_fetch_array($caristock);
+
+      if($qty >= $qtysekarang){
+         //kalau inputan user lebih besar daripada qty yng tercatat sekarang
+         //hitung selisih
+         $selisih = $qty-$qtysekarang;
+         $newstock = $qtysekarang+$selisih;
+
+         // Update the query
+      $query1 = mysqli_query($c, "UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
+      $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
+
+
+      if($query){
+         // Redirect on success
+         header("Location: pelanggan.php");
+         exit(); // Don't forget to call exit after header to stop script execution
+      } else {
+         // Display error if query fails
+         echo '
+         <script>
+            alert("Gagal");
+            window.location.href = "pelanggan.php";
+         </script>
+         ';
+      }
+      }else{
+         //kalau lebih kecil 
+         //hitung selisih 
+         $selisih = $qtysekarang-$qty;
+         $newstock = $stocksekarang+$selisih;
+  // Update the query
+  $query1 = mysqli_query($c, "UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
+
+
+  if($query){
+     // Redirect on success
+     header("Location: pelanggan.php");
+     exit(); // Don't forget to call exit after header to stop script execution
+  } else {
+     // Display error if query fails
+     echo '
+     <script>
+         alert("Gagal");
+         window.location.href = "pelanggan.php";
+     </script>
+     ';
+  }
+         
+      }
+
+
+      
+      }
+
 ?>
 
 
