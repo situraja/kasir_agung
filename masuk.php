@@ -168,7 +168,7 @@ require 'ceklogin.php';
                     <div class="modal-content">
                       <!-- Modal Header -->
                         <div class="modal-header">
-                          <h4 class="modal-title">hapus <?=$namaproduk;?></h4>
+                          <h4 class="modal-title">hapus data barang</h4>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" >&times;</button>
                           </div>
                                                     

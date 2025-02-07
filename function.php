@@ -312,28 +312,29 @@ if(isset($_POST['hapuspelanggan'])){
       //cari tahu stock sekarang berapa
       $caristock = mysqli_query($c,"select * from produk where idproduk='$idp'");
       $caristock2 = mysqli_fetch_array($caristock);
+      $stocksekarang = $caristock2['stock'];
 
       if($qty >= $qtysekarang){
          //kalau inputan user lebih besar daripada qty yng tercatat sekarang
          //hitung selisih
          $selisih = $qty-$qtysekarang;
-         $newstock = $qtysekarang+$selisih;
+         $newstock = $stocksekarang+$selisih;
 
          // Update the query
-      $query1 = mysqli_query($c, "UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
-      $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
+      $query1 = mysqli_query($c,"UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
+      $query2 = mysqli_query($c,"UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
 
 
-      if($query){
+      if($query1&&$query2){
          // Redirect on success
-         header("Location: pelanggan.php");
+         header('Location: masuk.php');
          exit(); // Don't forget to call exit after header to stop script execution
       } else {
          // Display error if query fails
          echo '
          <script>
             alert("Gagal");
-            window.location.href = "pelanggan.php";
+            window.location.href = "masuk.php";
          </script>
          ';
       }
@@ -341,21 +342,22 @@ if(isset($_POST['hapuspelanggan'])){
          //kalau lebih kecil 
          //hitung selisih 
          $selisih = $qtysekarang-$qty;
-         $newstock = $stocksekarang+$selisih;
+         $newstock = $stocksekarang-$selisih;
   // Update the query
   $query1 = mysqli_query($c, "UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
+  $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
 
 
-  if($query){
+  if($query1&&$query2){
      // Redirect on success
-     header("Location: pelanggan.php");
+     header('Location: masuk.php');
      exit(); // Don't forget to call exit after header to stop script execution
   } else {
      // Display error if query fails
      echo '
      <script>
          alert("Gagal");
-         window.location.href = "pelanggan.php";
+         window.location.href = "masuk.php";
      </script>
      ';
   }
