@@ -298,75 +298,76 @@ if(isset($_POST['hapuspelanggan'])){
 
 
 
-      //mengubah data barang masuk
-      if(isset($_POST['editdatabarangmasuk'])){
-         $qty = $_POST['qty'];
-         $idm = $_POST['idm '];//id masuk
-         $idp = $_POST['idp'];//id produk
+      // Mengubah data barang masuk
+if (isset($_POST['editdatabarangmasuk'])) {
+   // Ambil data dari form
+   $qty = $_POST['qty']; // Jumlah barang yang baru
+   $idm = $_POST['idm']; // ID Masuk
+   $idp = $_POST['idp']; // ID Produk
 
-      //cari tau qty nya sekarang berapa
-      $caritahu = mysqli_query($c,"select * from masuk where idmasuk='$idm'");
-      $caritahu2 = mysqli_fetch_array($caritahu);
-      $qtysekarang = $caritahu2['qty'];
+   // Debug: Untuk memastikan data yang diterima
+   var_dump($_POST); // Hapus setelah debug selesai
 
-      //cari tahu stock sekarang berapa
-      $caristock = mysqli_query($c,"select * from produk where idproduk='$idp'");
-      $caristock2 = mysqli_fetch_array($caristock);
-      $stocksekarang = $caristock2['stock'];
+   // Cari tahu qty yang sekarang berapa
+   $caritahu = mysqli_query($c, "SELECT * FROM masuk WHERE idmasuk='$idm'");
+   if ($caritahu) {
+       $caritahu2 = mysqli_fetch_array($caritahu);
+       $qtysekarang = $caritahu2['qty'];
 
-      if($qty >= $qtysekarang){
-         //kalau inputan user lebih besar daripada qty yng tercatat sekarang
-         //hitung selisih
-         $selisih = $qty-$qtysekarang;
-         $newstock = $stocksekarang+$selisih;
+       // Cari tahu stock produk sekarang
+       $caristock = mysqli_query($c, "SELECT * FROM produk WHERE idproduk='$idp'");
+       if ($caristock) {
+           $caristock2 = mysqli_fetch_array($caristock);
+           $stocksekarang = $caristock2['stock'];
 
-         // Update the query
-      $query1 = mysqli_query($c,"UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
-      $query2 = mysqli_query($c,"UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
+           // Jika qty baru lebih besar dari qty yang tercatat
+           if ($qty >= $qtysekarang) {
+               $selisih = $qty - $qtysekarang;
+               $newstock = $stocksekarang + $selisih;
+           } else {
+               // Jika qty baru lebih kecil dari qty yang tercatat
+               $selisih = $qtysekarang - $qty;
+               $newstock = $stocksekarang - $selisih;
+           }
 
+           // Update data barang masuk
+           $query1 = mysqli_query($c, "UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
+           $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
 
-      if($query1&&$query2){
-         // Redirect on success
-         header('Location: masuk.php');
-         exit(); // Don't forget to call exit after header to stop script execution
-      } else {
-         // Display error if query fails
-         echo '
-         <script>
-            alert("Gagal");
-            window.location.href = "masuk.php";
-         </script>
-         ';
-      }
-      }else{
-         //kalau lebih kecil 
-         //hitung selisih 
-         $selisih = $qtysekarang-$qty;
-         $newstock = $stocksekarang-$selisih;
-  // Update the query
-  $query1 = mysqli_query($c, "UPDATE masuk SET qty='$qty' WHERE idmasuk='$idm'");
-  $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
+           // Cek apakah query berhasil
+           if ($query1 && $query2) {
+               // Redirect ke halaman masuk.php setelah berhasil
+               header('Location: masuk.php');
+               exit();  // Pastikan setelah header ada exit untuk menghentikan eksekusi lebih lanjut
+           } else {
+               // Jika gagal, tampilkan pesan error
+               echo '
+                   <script>
+                       alert("Gagal mengupdate data!");
+                       window.location.href = "masuk.php";
+                   </script>
+               ';
+           }
+       } else {
+           // Jika query stock gagal
+           echo '
+               <script>
+                   alert("Gagal mengambil data produk!");
+                   window.location.href = "masuk.php";
+               </script>
+           ';
+       }
+   } else {
+       // Jika query barang masuk gagal
+       echo '
+           <script>
+               alert("Gagal mengambil data barang masuk!");
+               window.location.href = "masuk.php";
+           </script>
+       ';
+   }
+}
 
-
-  if($query1&&$query2){
-     // Redirect on success
-     header('Location: masuk.php');
-     exit(); // Don't forget to call exit after header to stop script execution
-  } else {
-     // Display error if query fails
-     echo '
-     <script>
-         alert("Gagal");
-         window.location.href = "masuk.php";
-     </script>
-     ';
-  }
-         
-      }
-
-
-      
-      }
 
 ?>
 
