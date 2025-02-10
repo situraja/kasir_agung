@@ -148,10 +148,19 @@ if (isset($_POST['barangmasuk'])) {
     $idproduk = mysqli_real_escape_string($c, $_POST['idproduk']);
     $qty = mysqli_real_escape_string($c, $_POST['qty']);
 
+     // Cari tahu stock produk sekarang
+     $caristock = mysqli_query($c, "SELECT * FROM produk WHERE idproduk='$idproduk'");
+     if ($caristock) {
+         $caristock2 = mysqli_fetch_array($caristock);
+         $stocksekarang = $caristock2['stock'];
+
+//hitung
+$newstock = $stocksekarang+$qty;
     
     $insertb = mysqli_query($c, "INSERT INTO masuk (idproduk, qty) VALUES ('$idproduk', '$qty')");
+    $updatetb = mysqli_query($c, "UPDATE produk set stock='$newstock' where idproduk='$idproduk'");
 
-    if ($insertb) {
+    if ($insertb&&$updatetb) {
         
         header("Location: masuk.php");
         exit(); 
@@ -165,6 +174,8 @@ if (isset($_POST['barangmasuk'])) {
         ';
     }
 }
+}
+
 //hapus produk pesanan 
 if(isset($_POST['hapusprodukpesanan'])){
 $idp = $_POST['idp'];//iddetailpesanan
@@ -369,7 +380,50 @@ if (isset($_POST['editdatabarangmasuk'])) {
 }
 
 
+//hapus data barang masuk 
+if(isset($_POST['hapuspelanggan'])){
+   $idm = $_POST['idmasuk'];
+   $idp = $_POST['idproduk'];
+ 
+    // Cari tahu qty yang sekarang berapa
+    $caritahu = mysqli_query($c, "SELECT * FROM masuk WHERE idmasuk='$idm'");
+    if ($caritahu) {
+        $caritahu2 = mysqli_fetch_array($caritahu);
+        $qtysekarang = $caritahu2['qty'];
+ 
+        // Cari tahu stock produk sekarang
+        $caristock = mysqli_query($c, "SELECT * FROM produk WHERE idproduk='$idp'");
+        if ($caristock) {
+            $caristock2 = mysqli_fetch_array($caristock);
+            $stocksekarang = $caristock2['stock'];
+ 
+
+              // Jika qty baru lebih kecil dari qty yang tercatat
+              $newstock = $stocksekarang - $qtysekarang;
+          }
+
+          // Update data barang masuk
+          $query1 = mysqli_query($c, "DELETE from masuk WHERE idmasuk='$idm'");
+          $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
+
+          // Cek apakah query berhasil
+          if ($query1 && $query2) {
+              // Redirect ke halaman masuk.php setelah berhasil
+              header('Location: masuk.php');
+              exit();  // Pastikan setelah header ada exit untuk menghentikan eksekusi lebih lanjut
+          } else {
+              // Jika gagal, tampilkan pesan error
+              echo '
+                  <script>
+                      alert("Gagal mengupdate data!");
+                      window.location.href = "masuk.php";
+                  </script>
+              ';
+   
+          }
+   
+   
+ }
+ }
+
 ?>
-
-
-

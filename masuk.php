@@ -176,20 +176,21 @@ require 'ceklogin.php';
                     <div class="modal-content">
                       <!-- Modal Header -->
                         <div class="modal-header">
-                          <h4 class="modal-title">hapus data barang</h4>
+                          <h4 class="modal-title">hapus data barang masuk</h4>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" >&times;</button>
                           </div>
                                                     
                             <!-- Modal Body -->
                             <div class="modal-body">
                         <form action="function.php" method="post">
-                      Apakah Anda yakin ingin menghapus barang ini ?
+                      Apakah Anda yakin ingin menghapus data ini ?
                         <input type="hidden" name="idp" value="<?=$idproduk;?>">
+                        <input type="hidden" name="idm" value="<?=$idmasuk;?>">
                         </div>
                                                     
                         <!-- Modal Footer -->
                         <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" name="hapusbarang">Submit</button>
+                        <button type="submit" class="btn btn-success" name="hapusdatabarangmasuk">Submit</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
                                                           
