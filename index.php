@@ -180,10 +180,47 @@ $h2 = mysqli_num_rows($h1); // number of orders
                                             <td><?=$jumlah;?></td>
                                             <td>
                                                 <a href="view.php?idp=<?=$idorder;?>" class="btn btn-primary" target="blank">Tampilkan</a>
-                                                <a href="delete.php?idp=<?=$idorder;?>" class="btn btn-danger" target="blank">Hapus</a>
-                                            </td>
+                                               <!-- Delete Button (example text for now) -->
+                                        <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteLabel<?=$idorder;?>">
+                                          Delete
+                                        </button>
                                         </tr>
-                                    <?php } ?>
+                                        <!-- Modal Delete -->
+<div class="modal fade" id="deleteLabel<?=$idorder;?>" tabindex="-1" aria-labelledby="deleteLabel<?=$idorder;?>" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Hapus Data Pesanan</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form action="function.php" method="post">
+                    <p>Apakah Anda yakin ingin menghapus pesanan ini?</p>
+                    <input type="hidden" name="idorder" value="<?=$idorder;?>"> <!-- ID order -->
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="hapusorder">Submit</button> <!-- Tombol Submit -->
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> <!-- Tombol Close -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+                                       <?php
+                                    };// end of  while
+                               
+
+                                    ?>
+                                   
                                     </tbody>
                                 </table>
                             </div>
@@ -232,10 +269,10 @@ $h2 = mysqli_num_rows($h1); // number of orders
                                 </select>
                             </div>
                     </div>
-                    <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" name="hapusdatabarangmasuk">Submit</button> <!-- Tombol Submit -->
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> <!-- Tombol Close -->
-                    </div>
+                     <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="tambahpesanan">Submit</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                              </div>
                     </form>
                 </div>
             </div>

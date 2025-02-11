@@ -427,4 +427,47 @@ if (isset($_POST['hapusdatabarangmasuk'])) {
  }
  
 
+ //hapus order 
+ if(isset($_POST['hapusorder'])){
+    $ido = $_POST['idorder'];
+
+    $cekdata = mysqli_query($c,"select * from detailpesanan dp where idpesanan='$ido'");
+
+    while($ok=mysqli_fetch_array($cekdata)){
+        //balikin stock 
+        $qty = $ok['qty'];
+        $idproduk = $ok['idproduk'];
+        $iddp = $ok['iddetailpesanan'];
+         // Cari tahu stock produk sekarang
+         $caristock = mysqli_query($c, "SELECT * FROM produk WHERE idproduk='$idproduk'");
+         if ($caristock) {
+             $caristock2 = mysqli_fetch_array($caristock);
+             $stocksekarang = $caristock2['stock'];
+
+             $newstock = $stocksekarang+$qty;
+
+             $queryupdate = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idproduk'");
+
+
+        //hapus data
+         $querydelete = mysqli_query($c,"delete from detailpesanan where iddetailpesanan='$iddp'");
+         }
+        }
+
+    $query = mysqli_query($c,"delete from pesanan where idorder='$ido'");
+  
+    if($queryupdate&& $querydelete && $query){
+     // Redirect on success
+     header("Location: index.php");
+     exit(); // Don't forget to call exit after header to stop script execution
+  } else {
+     // Display error if query fails
+     echo '
+     <script>
+         alert("berhasil");
+         window.location.href = "index.php";
+     </script>
+     ';
+  }
+  }
 ?>
