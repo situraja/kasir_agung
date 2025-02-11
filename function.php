@@ -380,10 +380,10 @@ if (isset($_POST['editdatabarangmasuk'])) {
 }
 
 
-//hapus data barang masuk 
-if(isset($_POST['hapuspelanggan'])){
-   $idm = $_POST['idmasuk'];
-   $idp = $_POST['idproduk'];
+// Hapus data barang masuk
+if (isset($_POST['hapusdatabarangmasuk'])) {
+    $idm = $_POST['idmasuk'];
+    $idp = $_POST['idproduk'];
  
     // Cari tahu qty yang sekarang berapa
     $caritahu = mysqli_query($c, "SELECT * FROM masuk WHERE idmasuk='$idm'");
@@ -397,33 +397,34 @@ if(isset($_POST['hapuspelanggan'])){
             $caristock2 = mysqli_fetch_array($caristock);
             $stocksekarang = $caristock2['stock'];
  
-
-              // Jika qty baru lebih kecil dari qty yang tercatat
-              $newstock = $stocksekarang - $qtysekarang;
-          }
-
-          // Update data barang masuk
-          $query1 = mysqli_query($c, "DELETE from masuk WHERE idmasuk='$idm'");
-          $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
-
-          // Cek apakah query berhasil
-          if ($query1 && $query2) {
-              // Redirect ke halaman masuk.php setelah berhasil
-              header('Location: masuk.php');
-              exit();  // Pastikan setelah header ada exit untuk menghentikan eksekusi lebih lanjut
-          } else {
-              // Jika gagal, tampilkan pesan error
-              echo '
-                  <script>
-                      alert("Gagal mengupdate data!");
-                      window.location.href = "masuk.php";
-                  </script>
-              ';
-   
-          }
-   
-   
+            // Periksa apakah qty yang akan dihapus lebih kecil dari stock yang ada
+            $newstock = $stocksekarang - $qtysekarang;
+ 
+            // Update data barang masuk
+            $query1 = mysqli_query($c, "DELETE FROM masuk WHERE idmasuk='$idm'");
+            $query2 = mysqli_query($c, "UPDATE produk SET stock='$newstock' WHERE idproduk='$idp'");
+ 
+            // Cek apakah query berhasil
+            if ($query1 && $query2) {
+                // Redirect ke halaman masuk.php setelah berhasil
+                header('Location: masuk.php');
+                exit();  // Pastikan setelah header ada exit untuk menghentikan eksekusi lebih lanjut
+            } else {
+                // Jika gagal, tampilkan pesan error
+                echo '
+                    <script>
+                        alert("Gagal mengupdate data!");
+                        window.location.href = "masuk.php";
+                    </script>
+                ';
+            }
+        } else {
+            echo "Gagal mengambil data stock produk. Error: " . mysqli_error($c);
+        }
+    } else {
+        echo "Gagal mengambil data barang masuk. Error: " . mysqli_error($c);
+    }
  }
- }
+ 
 
 ?>

@@ -170,34 +170,36 @@ require 'ceklogin.php';
 
 
                                     
-                        <!-- Modal Delete -->
-                      <div class="modal fade" id="deleteLabel<?=$idmasuk;?>" tabindex="-1" aria-labelledby="deleteLabel<?=$idmasuk;?>" aria-hidden="true">
-                      <div class="modal-dialog">
-                    <div class="modal-content">
-                      <!-- Modal Header -->
-                        <div class="modal-header">
-                          <h4 class="modal-title">hapus data barang masuk</h4>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" >&times;</button>
-                          </div>
-                                                    
-                            <!-- Modal Body -->
-                            <div class="modal-body">
-                        <form action="function.php" method="post">
-                      Apakah Anda yakin ingin menghapus data ini ?
-                        <input type="hidden" name="idp" value="<?=$idproduk;?>">
-                        <input type="hidden" name="idm" value="<?=$idmasuk;?>">
-                        </div>
-                                                    
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" name="hapusdatabarangmasuk">Submit</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        </div>
-                                                          
-                        </form>
-                          </div>
-                        </div>
-                        </div>
+              <!-- Modal Delete -->
+<div class="modal fade" id="deleteLabel<?=$idmasuk;?>" tabindex="-1" aria-labelledby="deleteLabel<?=$idmasuk;?>" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Hapus Data Barang Masuk</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form action="function.php" method="post">
+                    <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                    <input type="hidden" name="idproduk" value="<?=$idproduk;?>"> <!-- ID Produk -->
+                    <input type="hidden" name="idmasuk" value="<?=$idmasuk;?>"> <!-- ID Masuk -->
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="hapusdatabarangmasuk">Submit</button> <!-- Tombol Submit -->
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> <!-- Tombol Close -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
                                        <?php
                                     };// end of  while

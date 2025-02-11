@@ -233,8 +233,8 @@ $h2 = mysqli_num_rows($h1); // number of orders
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" name="tambahpesanan">Submit</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" name="hapusdatabarangmasuk">Submit</button> <!-- Tombol Submit -->
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> <!-- Tombol Close -->
                     </div>
                     </form>
                 </div>
